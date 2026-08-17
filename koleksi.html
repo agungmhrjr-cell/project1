@@ -1,34 +1,104 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Koleksi - MHRJR STORE</title>
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Koleksi MHRJR STORE</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#070b13;color:#fff;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 15% 15%,#2563eb35,transparent 30%),radial-gradient(circle at 85% 80%,#ef444425,transparent 32%)}
+.nav{position:sticky;top:0;z-index:20;height:72px;padding:0 6%;display:flex;align-items:center;justify-content:space-between;background:#070b13ed;border-bottom:1px solid #ffffff14;backdrop-filter:blur(15px)}
+.logo{font-size:23px;font-weight:900;letter-spacing:1px}
+.logo .r{color:#ef4444}.logo .b{color:#3b82f6}
+.nav nav{display:flex;gap:20px}
+.nav a{color:#cbd5e1;text-decoration:none;font-weight:600}
+.nav a:hover{color:#fff}
+.section{max-width:1300px;margin:auto;padding:55px 6%}
+.section h1{font-size:42px;margin:0 0 10px}
+.muted{color:#94a3b8;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px}
+.product{background:#111827;border:1px solid #263244;border-radius:17px;overflow:hidden;transition:.25s;box-shadow:0 15px 35px #0003}
+.product:hover{transform:translateY(-6px);border-color:#3b82f677}
+.product img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#e5e7eb}
+.product-body{padding:16px}
+.tag{font-size:12px;color:#60a5fa;font-weight:bold;text-transform:uppercase;letter-spacing:1px}
+.product h3{font-size:17px;line-height:1.4;min-height:48px;margin:8px 0 15px}
+.btn{display:inline-block;padding:12px 17px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;text-decoration:none;font-weight:900}
+.logout{background:#ef4444;border:0;cursor:pointer;font-size:13px}
+footer{text-align:center;padding:28px;color:#64748b;border-top:1px solid #263244;margin-top:30px}
+#loading{padding:30px;text-align:center;color:#94a3b8}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:550px){
+ .nav{padding:0 4%}.nav nav{gap:9px;font-size:12px}
+ .section{padding:45px 5%}.section h1{font-size:32px}
+ .grid{gap:10px}.product-body{padding:12px}.product h3{font-size:15px}
+}
+</style>
+
+</head><body>
 <header class="nav">
-  <div class="logo"><span>MHRJR</span> <b>STORE</b></div>
-  <nav><a href="index.html">Beranda</a><a href="koleksi.html">Koleksi</a><a href="login.html">Login</a></nav>
+  <div class="logo"><span class="r">MHRJR</span> <span class="b">STORE</span></div>
+  <nav>
+    <a href="index.html">Beranda</a>
+    <a href="koleksi.html">Koleksi</a>
+    <a href="#" id="logout" class="logout">Keluar</a>
+  </nav>
 </header>
-<main class="container">
-<h1>Koleksi MHRJR STORE</h1>
-<p class="muted">Tambahkan produk satu per satu di bagian <code>products</code> pada file ini.</p>
-<div id="products" class="products"></div>
+
+<main class="section">
+  <h1>Koleksi MHRJR STORE</h1>
+  <p class="muted">Koleksi hanya dapat dilihat setelah login.</p>
+  <div id="loading">Memeriksa login...</div>
+  <div class="grid" id="products" style="display:none"></div>
 </main>
+
+<footer>MHRJR STORE © 2026</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL = "https://evqjtwnffzpuucbcxmgx.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_PqixNwuQtUKMn2LEhtYQgg_dOg2wEK0";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
 const products = [
-  {name:"Kaos Polo Pria Bordir Kaos Kerah Pria Kemeja Pria", image:"images/produk-1.jpg", category:"Kaos"},
-  {name:"Kremlin Tracktop Suit Jacket - Autodrive", image:"images/produk-2.jpg", category:"Jaket"},
-  {name:"Produk Koleksi 3", image:"images/produk-3.jpg", category:"Fashion"},
-  {name:"Celana Cargo Corduroy", image:"images/produk-4.jpg", category:"Celana"}
+  {name:"Kaos Polo Pria Bordir Kaos Kerah Pria Kemeja Pria",image:"images/produk-1.jpg",category:"Kaos"},
+  {name:"Kremlin Tracktop Suit Jacket - Autodrive",image:"images/produk-2.jpg",category:"Jaket"},
+  {name:"Koleksi Fashion 3",image:"images/produk-3.jpg",category:"Fashion"},
+  {name:"Celana Cargo Corduroy",image:"images/produk-4.jpg",category:"Celana"}
 ];
-document.getElementById("products").innerHTML = products.map(p => `
-<article class="product">
-  <img src="${p.image}" alt="${p.name}" loading="lazy">
-  <div><small>${p.category}</small><h2>${p.name}</h2>
-  <a class="btn" href="https://collshp.com/mhrjrstore" target="_blank" rel="noopener">Lihat Produk</a></div>
-</article>`).join("");
+
+async function checkLogin(){
+  const {data:{session}} = await supabaseClient.auth.getSession();
+
+  if(!session){
+    window.location.href = "login.html";
+    return;
+  }
+
+  document.getElementById("loading").style.display = "none";
+  const box = document.getElementById("products");
+  box.style.display = "grid";
+
+  box.innerHTML = products.map(p => `
+    <article class="product">
+      <img src="${p.image}" alt="${p.name}" loading="lazy">
+      <div class="product-body">
+        <div class="tag">${p.category}</div>
+        <h3>${p.name}</h3>
+        <a class="btn" href="https://collshp.com/mhrjrstore" target="_blank" rel="noopener">
+          Lihat Produk
+        </a>
+      </div>
+    </article>
+  `).join("");
+}
+
+document.getElementById("logout").addEventListener("click", async function(e){
+  e.preventDefault();
+  await supabaseClient.auth.signOut();
+  window.location.href = "login.html";
+});
+
+checkLogin();
 </script>
-</body>
-</html>
+</body></html>
