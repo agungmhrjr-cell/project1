@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MHRJR STORE - Login</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial;background:#050816;color:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bg{position:fixed;inset:0;background:radial-gradient(circle at 15% 20%,#1d4ed8,transparent 32%),radial-gradient(circle at 85% 80%,#dc2626,transparent 32%),#050816}
+.orb{position:absolute;border-radius:50%;filter:blur(10px);animation:f 8s ease-in-out infinite;opacity:.45}.a{width:280px;height:280px;background:#2563eb;left:-80px;top:-80px}.b{width:320px;height:320px;background:#ef4444;right:-100px;bottom:-100px;animation-delay:-3s}
+@keyframes f{50%{transform:translate(30px,-30px) scale(1.12)}}
+.card{position:relative;z-index:2;width:min(430px,92%);padding:34px;background:rgba(15,23,42,.82);border:1px solid #ffffff20;border-radius:24px;backdrop-filter:blur(20px);box-shadow:0 25px 80px #0009;animation:in .7s ease}
+@keyframes in{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:none}}
+.logo{text-align:center;font-size:31px;font-weight:900;letter-spacing:2px}.r{color:#ef4444}.bl{color:#3b82f6}.sub{text-align:center;color:#94a3b8;margin:8px 0 25px;font-size:14px}
+label{display:block;margin:14px 0 7px;color:#cbd5e1;font-size:13px;font-weight:bold}input{width:100%;padding:14px;border-radius:11px;border:1px solid #334155;background:#020617aa;color:#fff;outline:0;font-size:15px}input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px #3b82f622}
+button{width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-weight:900;cursor:pointer;margin-top:20px}button:disabled{opacity:.65}
+.msg{display:none;padding:11px;margin-top:14px;border-radius:10px;text-align:center;font-size:13px}.err{background:#ef44441c;color:#fca5a5;border:1px solid #ef444455}.ok{background:#22c55e1c;color:#86efac;border:1px solid #22c55e55}
+.switch{text-align:center;margin-top:18px;color:#94a3b8;font-size:13px}a{color:#60a5fa;text-decoration:none;font-weight:bold}
+</style>
+</head>
+<body><div class="bg"><div class="orb a"></div><div class="orb b"></div></div>
+<div class="card">
+<div class="logo"><span class="r">MHRJR</span> <span class="bl">STORE</span></div>
+<div class="sub">Login pelanggan</div>
+<form id="form">
+<label>Email</label><input id="email" type="email" autocomplete="email" placeholder="nama@email.com" required>
+<label>Password</label><input id="password" type="password" autocomplete="current-password" placeholder="Password" required>
+<button id="btn">LOGIN</button>
+<div id="msg" class="msg"></div>
+</form>
+<div class="switch">Belum punya akun? <a href="daftar.html">Daftar sekarang</a></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase = window.supabase.createClient('https://evqjtwnffzpuucbcxmgx.supabase.co', 'sb_publishable_PqixNwuQtUKMn2LEhtYQgg_dOg2wEK0');
+const form=document.getElementById('form'),btn=document.getElementById('btn'),msg=document.getElementById('msg');
+function show(t,ok=false){msg.textContent=t;msg.className='msg '+(ok?'ok':'err');msg.style.display='block'}
+form.addEventListener('submit',async e=>{
+ e.preventDefault();btn.disabled=true;btn.textContent='MEMPROSES...';msg.style.display='none';
+ const {error}=await supabase.auth.signInWithPassword({email:email.value.trim(),password:password.value});
+ if(error){show('Email atau password salah.');btn.disabled=false;btn.textContent='LOGIN';return}
+ show('Login berhasil. Membuka toko...',true);
+ setTimeout(()=>location.href='index.html',700);
+});
+</script></body></html>

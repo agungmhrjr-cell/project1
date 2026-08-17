@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MHRJR STORE - Daftar</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial;background:#050816;color:#fff;display:flex;align-items:center;justify-content:center}
+.bg{position:fixed;inset:0;background:radial-gradient(circle at 20% 20%,#1d4ed8,transparent 32%),radial-gradient(circle at 80% 80%,#dc2626,transparent 32%),#050816}
+.card{position:relative;z-index:2;width:min(450px,92%);padding:34px;background:#0f172ad9;border:1px solid #ffffff20;border-radius:24px;backdrop-filter:blur(20px);box-shadow:0 25px 80px #0009;animation:in .7s ease}
+@keyframes in{from{opacity:0;transform:translateY(40px) scale(.92)}to{opacity:1;transform:none}}
+.logo{text-align:center;font-size:31px;font-weight:900;letter-spacing:2px}.r{color:#ef4444}.bl{color:#3b82f6}.sub{text-align:center;color:#94a3b8;margin:8px 0 20px;font-size:14px}
+label{display:block;margin:12px 0 7px;color:#cbd5e1;font-size:13px;font-weight:bold}input{width:100%;padding:13px;border-radius:11px;border:1px solid #334155;background:#020617aa;color:#fff;outline:0;font-size:15px}input:focus{border-color:#3b82f6;box-shadow:0 0 0 3px #3b82f622}
+button{width:100%;padding:14px;border:0;border-radius:11px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-weight:900;cursor:pointer;margin-top:18px}button:disabled{opacity:.65}
+.msg{display:none;padding:11px;margin-top:14px;border-radius:10px;text-align:center;font-size:13px}.err{background:#ef44441c;color:#fca5a5;border:1px solid #ef444455}.ok{background:#22c55e1c;color:#86efac;border:1px solid #22c55e55}
+.switch{text-align:center;margin-top:18px;color:#94a3b8;font-size:13px}a{color:#60a5fa;text-decoration:none;font-weight:bold}
+</style></head>
+<body><div class="bg"></div><div class="card">
+<div class="logo"><span class="r">MHRJR</span> <span class="bl">STORE</span></div>
+<div class="sub">Buat akun pelanggan</div>
+<form id="form">
+<label>Nama</label><input id="name" required placeholder="Nama kamu">
+<label>Email</label><input id="email" type="email" autocomplete="email" required placeholder="nama@email.com">
+<label>Password</label><input id="password" type="password" minlength="6" required placeholder="Minimal 6 karakter">
+<label>Ulangi Password</label><input id="confirm" type="password" minlength="6" required placeholder="Ulangi password">
+<button id="btn">BUAT AKUN</button><div id="msg" class="msg"></div>
+</form>
+<div class="switch">Sudah punya akun? <a href="login.html">Login</a></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabase=window.supabase.createClient('https://evqjtwnffzpuucbcxmgx.supabase.co','sb_publishable_PqixNwuQtUKMn2LEhtYQgg_dOg2wEK0');
+const form=document.getElementById('form'),btn=document.getElementById('btn'),msg=document.getElementById('msg');
+function show(t,ok=false){msg.textContent=t;msg.className='msg '+(ok?'ok':'err');msg.style.display='block'}
+form.addEventListener('submit',async e=>{
+ e.preventDefault();msg.style.display='none';
+ if(password.value!==confirm.value){show('Password tidak sama.');return}
+ if(password.value.length<6){show('Password minimal 6 karakter.');return}
+ btn.disabled=true;btn.textContent='MENDAFTAR...';
+ const {data,error}=await supabase.auth.signUp({email:email.value.trim(),password:password.value,options:{data:{name:name.value.trim()}}});
+ if(error){show(error.message);btn.disabled=false;btn.textContent='BUAT AKUN';return}
+ if(data.session){show('Akun berhasil dibuat!',true);setTimeout(()=>location.href='index.html',800)}
+ else {show('Akun dibuat. Cek email untuk konfirmasi, lalu login.',true);btn.disabled=false;btn.textContent='BUAT AKUN'}
+});
+</script></body></html>

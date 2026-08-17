@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Koleksi - MHRJR STORE</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="nav">
+  <div class="logo"><span>MHRJR</span> <b>STORE</b></div>
+  <nav><a href="index.html">Beranda</a><a href="koleksi.html">Koleksi</a><a href="login.html">Login</a></nav>
+</header>
+<main class="container">
+<h1>Koleksi MHRJR STORE</h1>
+<p class="muted">Tambahkan produk satu per satu di bagian <code>products</code> pada file ini.</p>
+<div id="products" class="products"></div>
+</main>
+<script>
+const products = [
+  {name:"Kaos Polo Pria Bordir Kaos Kerah Pria Kemeja Pria", image:"images/produk-1.jpg", category:"Kaos"},
+  {name:"Kremlin Tracktop Suit Jacket - Autodrive", image:"images/produk-2.jpg", category:"Jaket"},
+  {name:"Produk Koleksi 3", image:"images/produk-3.jpg", category:"Fashion"},
+  {name:"Celana Cargo Corduroy", image:"images/produk-4.jpg", category:"Celana"}
+];
+document.getElementById("products").innerHTML = products.map(p => `
+<article class="product">
+  <img src="${p.image}" alt="${p.name}" loading="lazy">
+  <div><small>${p.category}</small><h2>${p.name}</h2>
+  <a class="btn" href="https://collshp.com/mhrjrstore" target="_blank" rel="noopener">Lihat Produk</a></div>
+</article>`).join("");
+</script>
+</body>
+</html>
